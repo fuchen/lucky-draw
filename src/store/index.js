@@ -22,7 +22,7 @@ export default new Vuex.Store({
     newLottery: [],
     list: [],
     photos: [],
-    chitMode: false
+    chitMode: true
   },
   mutations: {
     setClearConfig(state) {

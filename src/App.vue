@@ -134,7 +134,7 @@ export default {
 
   computed: {
     chitColor() {
-      return this.$store.state.chitMode ? '#A09EFF' : '#409EFF'
+      return this.$store.state.chitMode ? '#409EFF' : '#A09EFF'
     },
     resCardStyle() {
       const style = { fontSize: '30px' };
