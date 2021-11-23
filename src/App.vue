@@ -2,10 +2,10 @@
   <div id="root">
     <header>
       <Publicity v-show="!running" />
-      <el-button class="res" type="text" @click="showResult = true">
+      <el-button class="res" type="text" @click="showResult = true" :style="{color: chitColor}">
         抽奖结果
       </el-button>
-      <el-button class="con" type="text" @click="showConfig = true">
+      <el-button class="con" type="text" @click="showConfig = true" :style="{color: chitColor}">
         抽奖配置
       </el-button>
     </header>
@@ -133,6 +133,9 @@ export default {
   components: { LotteryConfig, Publicity, Tool, Result },
 
   computed: {
+    chitColor() {
+      return this.$store.state.chitMode ? '#A09EFF' : '#409EFF'
+    },
     resCardStyle() {
       const style = { fontSize: '30px' };
       const { number } = this.config;
@@ -175,7 +178,7 @@ export default {
       const { number } = this.config;
       const nums = number >= 1500 ? 500 : this.config.number;
       const configNum = number > 1500 ? Math.floor(number / 3) : number;
-      const randomShowNums = luckydrawHandler(configNum, [], nums);
+      const randomShowNums = luckydrawHandler(this.list, configNum, [], nums, false);
       const randomShowDatas = randomShowNums.map((item) => {
         const listData = this.list.find((d) => d.key === item);
         const photo = this.photos.find((d) => d.id === item);
@@ -195,6 +198,13 @@ export default {
     },
   },
   created() {
+    window.addEventListener('keydown', (e) => {
+      if (e.key == 'Escape') {
+        console.log('chit key')
+        this.$store.commit('toggleChitMode')
+      }
+    });
+
     const data = getData(configField);
     if (data) {
       this.$store.commit('setConfig', Object.assign({}, data));
@@ -348,9 +358,11 @@ export default {
           num = qty;
         }
         const resArr = luckydrawHandler(
+          this.list,
           number,
           allin ? [] : this.allresult,
-          num
+          num,
+          this.$store.state.chitMode
         );
         this.resArr = resArr;
 

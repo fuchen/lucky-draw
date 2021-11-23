@@ -21,7 +21,8 @@ export default new Vuex.Store({
     },
     newLottery: [],
     list: [],
-    photos: []
+    photos: [],
+    chitMode: false
   },
   mutations: {
     setClearConfig(state) {
@@ -31,6 +32,9 @@ export default new Vuex.Store({
         firstPrize: 1
       };
       state.newLottery = [];
+    },
+    toggleChitMode(state) {
+      state.chitMode = !state.chitMode
     },
     setClearList(state) {
       state.list = [];
